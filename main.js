@@ -6,109 +6,16 @@ import {
     ADD_TASK_INPUT,
     ADD_TASK_BTN,
     DEL_TASK,
+    ADD_ITEM_FORM,
 } from "./constToDoList.js";
 
-document.querySelector(".wrapperTask").addEventListener("click", aTest)
+const arrItems = /*JSON.parse(localStorage.getItem('item')) ||*/ [];
 
-function aTest(e) {
-    // console.log(e.target.closest(".addTaskinput").value != "");
-    if(!e.target.classList.contains("addTaskBtn")) return;
-    console.log("ok");
-    // console.log(ADD_TASK_INPUT.value);
-    
-     ////
-
-    if(e.target.closest(".Low")) {
-        console.log(ADD_TASK_INPUT.value);
-        // console.log(e.target.closest(".addTaskinput").value != "");
-        // console.log(e.closest(".addTaskinput"));
-        
-            // e.target.closest(".addTaskinput").getAttribute(value)
-            let containerTask = e.target.closest(".Low")
-            let getValue = containerTask.querySelector(".addTaskinput").value
-        if(getValue != "") {            
-            containerTask.innerHTML += `<div class='conteinerTasks'> <div class='task'> <div class='nameTask'> ${getValue} </div> <div class='BlockStatus'><div class='statusTask'>c</div><button class='delTask'>x</button></div></div><div>`
-        } else {
-            containerTask.querySelector(".addTaskinput").placeholder = "введите текст"
-            containerTask.querySelector(".addTaskinput").style.border = " 1px solid red"
-            setTimeout(() => containerTask.querySelector(".addTaskinput").style.border = "", 1000);
-        }
-    }
-    if(e.target.closest(".Hight")) {
-        let containerTask = e.target.closest(".Hight")
-        let getValue = containerTask.querySelector(".addTaskinput").value
-        if(getValue != "") {
-            containerTask.innerHTML += `<div class='conteinerTasks'> <div class='task'> <div class='nameTask'> ${getValue} </div> <div class='BlockStatus'><div class='statusTask'>c</div><button class='delTask'>x</button></div></div><div>`
-        } else {
-            containerTask.querySelector(".addTaskinput").placeholder = "введите текст"
-            containerTask.querySelector(".addTaskinput").style.border = " 1px solid red"
-            setTimeout(() => containerTask.querySelector(".addTaskinput").style.border = "", 1000);
-        }
-    }
-    if(e.target.closest(".Middle")) {
-        let containerTask = e.target.closest(".Middle")
-        let getValue = containerTask.querySelector(".addTaskinput").value
-        if(getValue != "") {
-            containerTask.innerHTML += `<div class='conteinerTasks'> <div class='task'> <div class='nameTask'> ${getValue} </div> <div class='BlockStatus'><div class='statusTask'>c</div><button class='delTask'>x</button></div></div><div>`
-        } else {
-            containerTask.querySelector(".addTaskinput").placeholder = "введите текст"
-            containerTask.querySelector(".addTaskinput").style.border = " 1px solid red"
-            setTimeout(() => containerTask.querySelector(".addTaskinput").style.border = "", 1000);
-        }
-    }
-    
-    
-
-    // let item = e.target.closest(ADD_TASK_BTN);
-
-    // let divTask = document.createElement("div")
-    // divTask.classList.add("nameTask")
-    // NEW_TASK.append(divTask)
-
-    // let divNameTask = document.createElement("div")
-    // divNameTask.innerHTML = "hello name"
-    // divNameTask.classList.add("nameTask")
-    // divTask.append(divNameTask)
-
-    // let divBlockStatus = document.createElement("div")
-    // divBlockStatus.classList.add("nameTasks")
-    // divTask.append(divBlockStatus)
-
-    // let divStatus = document.createElement("div")
-    // divStatus.innerHTML = "status"
-    // divStatus.classList.add("nameTask")
-    // divBlockStatus.append(divStatus)
-
-    // let divDell = document.createElement("button")
-    // divDell.innerHTML = "x"
-    // divDell.classList.add("nameTask")
-    // divBlockStatus.append(divDell)
-
+const priorityToDoList = {
+    LOW : "low",
+    MIDDLE : "middle",
+    HIGHT : "hight",
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const statusToDoList = {
     IN_PROGRESS : "In Progress",
@@ -116,11 +23,120 @@ const statusToDoList = {
     TO_DO : "To Do",
 }
 
-const priorityToDoList = {
-    LOW : "low",
-    MIDDLE : "middle",
-    HIGHT : "hight",
+document.querySelector(".wrapperTask").addEventListener("click", addTasks)
+
+function addTasks(e) {
+    e.preventDefault();
+    // console.log(e.target.closest(".addTaskinput").value != "");
+    if(!e.target.classList.contains("addTaskBtn")) return;
+    // console.log(ADD_TASK_INPUT.value);
+        
+    rendorState(e)
 }
+
+function rendorState(e) {
+    e.preventDefault();
+    for(const key in priorityToDoList) {
+        let containerTask = e.target.closest(`.${priorityToDoList[key]}`)
+        if(containerTask) {     
+            let findName = arrItems.map(item => item.name)
+            
+            const getValue = containerTask.querySelector(".addTaskinput").value
+            const item = {name: getValue, priority: key, stats: key}
+            if(getValue != "" && !findName.includes(getValue)) {
+                arrItems.push(item)
+                // localStorage.setItem("item", JSON.stringify(arrItems) )
+                console.log("задача добавлена");    
+                console.log(arrItems);        
+                let addInnerHtml = `
+                <div class='conteinerTasks'>
+                    <div class='task'>
+                        <div class='nameTask'> ${getValue} </div>
+                        <div class='BlockStatus'>
+                            <div class='statusTask'> ${priorityToDoList[key]} </div>
+                            <button class='delTask'>x</button>
+                        </div>
+                    </div>
+                <div>`
+                let innerAddHtml = containerTask.insertAdjacentHTML('beforeend', addInnerHtml)
+                
+            } else {
+                containerTask.querySelector(".addTaskinput").placeholder = "введите текст"
+                containerTask.querySelector(".addTaskinput").style.border = " 1px solid red"
+                setTimeout(() => containerTask.querySelector(".addTaskinput").style.border = "", 1000);
+            }
+        }
+        showTaskHTML(e)
+    }
+    
+    //удалялись элементы на странице
+
+    //затем добавлялись на страницу из массива
+    // e.preventDefault();
+    
+}
+
+function showTaskHTML(e) {
+    // e.preventDefault();
+    const task = document.querySelectorAll('.conteinerTasks');
+    task.forEach(el => el.remove());
+    // for(const key in priorityToDoList) {
+    //     let containerTask = e.target.closest(`.${priorityToDoList[key]}`)
+    // }
+    for(const key of arrItems) {
+        for(let keyc of priorityToDoList) {
+            let containerTask = e.target.closest(`.${priorityToDoList[keyc]}`)
+            if(containerTask) {
+                let addInnerHtml = `
+                    <div class='conteinerTasks'>
+                        <div class='task'>
+                            <div class='nameTask'> ${getValue} </div>
+                            <div class='BlockStatus'>
+                                <div class='statusTask'> ${priorityToDoList[keyc]} </div>
+                                <button class='delTask'>x</button>
+                            </div>
+                        </div>
+                    <div>`
+                containerTask.insertAdjacentHTML('beforeend', addInnerHtml)
+                console.log("fast");
+            }
+            console.log("key.map(a => a.task)");
+        }
+    }
+}
+
+document.querySelector(".wrapper").addEventListener("click", delTask)
+
+function delTask(e) {
+    if(!e.target.closest(".delTask")) return 
+    let item = e.target.closest(".conteinerTasks")
+    item.remove()
+
+    //rendorState()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const To_Do = [
     {name : "create task 1", status : statusToDoList.IN_PROGRESS, priority : priorityToDoList.LOW,}, 
@@ -150,8 +166,6 @@ function showTask() {
 }
 
 function addTask(nameTask) {
-    // let nameTask = ADD_TASK_INPUT.value
-    console.log();
     let findName = To_Do.map(item => item.name)
     // console.log(findName);
     let addTasks = {name : nameTask, status : statusToDoList.TO_DO, priority : priorityToDoList.HIGHT,};
