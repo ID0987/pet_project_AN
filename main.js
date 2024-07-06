@@ -7,14 +7,16 @@ import {
     ADD_TASK_BTN,
     DEL_TASK,
     ADD_ITEM_FORM,
+    WRAPPER_TASK,
+    block_priority
 } from "./constToDoList.js";
 
-const arrItems = /*JSON.parse(localStorage.getItem('item')) ||*/ [];
+const arrToDoList = /*JSON.parse(localStorage.getItem('item')) ||*/ [];
 
 const priorityToDoList = {
     LOW : "low",
-    MIDDLE : "middle",
     HIGHT : "hight",
+    MIDDLE : "middle",
 }
 
 const statusToDoList = {
@@ -23,98 +25,82 @@ const statusToDoList = {
     TO_DO : "To Do",
 }
 
-document.querySelector(".wrapperTask").addEventListener("click", addTasks)
+WRAPPER_TASK.addEventListener("click", addTasks);
+WRAPPER_TASK.addEventListener("submit", addTasks);
 
 function addTasks(e) {
     e.preventDefault();
-    // console.log(e.target.closest(".addTaskinput").value != "");
     if(!e.target.classList.contains("addTaskBtn")) return;
-    // console.log(ADD_TASK_INPUT.value);
+    let containerTask = e.target.closest("div")
+    for(const key in priorityToDoList) {
+        const getName = containerTask.querySelector(`#${priorityToDoList[key]}`)
         
+        if (getName) {
+            
+            const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS}
+            console.log(newTask);
+            arrToDoList.push(newTask)
+            console.log(arrToDoList);
+        }
+
+    }
     rendorState(e)
 }
 
 function rendorState(e) {
     e.preventDefault();
-    for(const key in priorityToDoList) {
-        let containerTask = e.target.closest(`.${priorityToDoList[key]}`)
-        if(containerTask) {     
-            let findName = arrItems.map(item => item.name)
-            
-            const getValue = containerTask.querySelector(".addTaskinput").value
-            const item = {name: getValue, priority: key, stats: key}
-            if(getValue != "" && !findName.includes(getValue)) {
-                arrItems.push(item)
-                // localStorage.setItem("item", JSON.stringify(arrItems) )
-                console.log("задача добавлена");    
-                console.log(arrItems);        
-                let addInnerHtml = `
+
+    delOldTaskHTML()
+
+    for(const keyToDoList of arrToDoList) {
+        for(const key in priorityToDoList) {
+            if(priorityToDoList[key] === keyToDoList.priority){
+                const findClassNewTask = document.getElementById(`${priorityToDoList[key]}`).closest(".newTask")
+                // console.log(findClassNewTask);
+                const btnDel = `<button class='delTask'>x</button>`
+                const addInnerHtml = `
                 <div class='conteinerTasks'>
                     <div class='task'>
-                        <div class='nameTask'> ${getValue} </div>
+                        <div class='nameTask'> ${keyToDoList.name} </div>
                         <div class='BlockStatus'>
-                            <div class='statusTask'> ${priorityToDoList[key]} </div>
-                            <button class='delTask'>x</button>
+                            <div class='statusTask'> ${keyToDoList.priority} </div>
+                            ${btnDel}
                         </div>
                     </div>
                 <div>`
-                let innerAddHtml = containerTask.insertAdjacentHTML('beforeend', addInnerHtml)
-                
-            } else {
-                containerTask.querySelector(".addTaskinput").placeholder = "введите текст"
-                containerTask.querySelector(".addTaskinput").style.border = " 1px solid red"
-                setTimeout(() => containerTask.querySelector(".addTaskinput").style.border = "", 1000);
+                findClassNewTask.insertAdjacentHTML('afterend', addInnerHtml)
+                const btnDelFun = document.querySelector(".delTask")
+                btnDelFun.addEventListener("click",  () => delTask(keyToDoList.name));
             }
         }
-        showTaskHTML(e)
     }
-    
-    //удалялись элементы на странице
-
-    //затем добавлялись на страницу из массива
-    // e.preventDefault();
-    
 }
 
-function showTaskHTML(e) {
-    // e.preventDefault();
-    const task = document.querySelectorAll('.conteinerTasks');
-    task.forEach(el => el.remove());
-    // for(const key in priorityToDoList) {
-    //     let containerTask = e.target.closest(`.${priorityToDoList[key]}`)
+function delOldTaskHTML() {
+    const oldTasks = document.querySelectorAll('.conteinerTasks');
+    if(oldTasks.length !== 0) {
+        oldTasks.forEach(el => el.remove());
+        console.log(`удаление ${oldTasks.length} произошло`);
+    } 
+}
+
+
+
+function delTask(nameTask) { 
+    console.log(nameTask);
+    let findNameTask = arrToDoList.find(item => item.name == nameTask)
+    console.log(findNameTask);
+
+    // for(const keyToDoList of arrToDoList){
+    //     console.log(keyToDoList.name);
+        
+        // if (findNameTask.includes(keyToDoList.name)) {
+        //     delete keyToDoList.name
+        // } else {
+        //     console.log("задача не существует");
+        // }
     // }
-    for(const key of arrItems) {
-        for(let keyc of priorityToDoList) {
-            let containerTask = e.target.closest(`.${priorityToDoList[keyc]}`)
-            if(containerTask) {
-                let addInnerHtml = `
-                    <div class='conteinerTasks'>
-                        <div class='task'>
-                            <div class='nameTask'> ${getValue} </div>
-                            <div class='BlockStatus'>
-                                <div class='statusTask'> ${priorityToDoList[keyc]} </div>
-                                <button class='delTask'>x</button>
-                            </div>
-                        </div>
-                    <div>`
-                containerTask.insertAdjacentHTML('beforeend', addInnerHtml)
-                console.log("fast");
-            }
-            console.log("key.map(a => a.task)");
-        }
-    }
 }
-
-document.querySelector(".wrapper").addEventListener("click", delTask)
-
-function delTask(e) {
-    if(!e.target.closest(".delTask")) return 
-    let item = e.target.closest(".conteinerTasks")
-    item.remove()
-
-    //rendorState()
-}
-
 
 
 
