@@ -38,9 +38,9 @@ function addTasks(e) {
         if (getName) {
             
             const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS}
-            console.log(newTask);
+            // console.log(newTask);
             arrToDoList.push(newTask)
-            console.log(arrToDoList);
+            // console.log(arrToDoList);
         }
 
     }
@@ -61,7 +61,7 @@ function rendorState(e) {
                 const addInnerHtml = `
                 <div class='conteinerTasks'>
                     <div class='task'>
-                        <div class='nameTask'> ${keyToDoList.name} </div>
+                        <div class='nameTask'>${keyToDoList.name}</div>
                         <div class='BlockStatus'>
                             <div class='statusTask'> ${keyToDoList.priority} </div>
                             ${btnDel}
@@ -70,7 +70,8 @@ function rendorState(e) {
                 <div>`
                 findClassNewTask.insertAdjacentHTML('afterend', addInnerHtml)
                 const btnDelFun = document.querySelector(".delTask")
-                btnDelFun.addEventListener("click",  () => delTask(keyToDoList.name));
+
+                btnDelFun.addEventListener("click",  (e) => delTask(e));
             }
         }
     }
@@ -80,26 +81,20 @@ function delOldTaskHTML() {
     const oldTasks = document.querySelectorAll('.conteinerTasks');
     if(oldTasks.length !== 0) {
         oldTasks.forEach(el => el.remove());
-        console.log(`удаление ${oldTasks.length} произошло`);
+        // console.log(`удаление ${oldTasks.length} произошло`);
     } 
 }
 
 
 
-function delTask(nameTask) { 
-    console.log(nameTask);
-    let findNameTask = arrToDoList.find(item => item.name == nameTask)
-    console.log(findNameTask);
-
-    // for(const keyToDoList of arrToDoList){
-    //     console.log(keyToDoList.name);
-        
-        // if (findNameTask.includes(keyToDoList.name)) {
-        //     delete keyToDoList.name
-        // } else {
-        //     console.log("задача не существует");
-        // }
-    // }
+function delTask(e) { 
+    const findBlockStatus = e.target.parentElement;
+    const fintTask = findBlockStatus.parentElement;
+    const nameTaskTarget = fintTask.querySelector('.nameTask').textContent;
+    const findNameTask = arrToDoList.findIndex(e => e.name === nameTaskTarget);
+    const ASK = arrToDoList.splice(findNameTask, 1)
+    console.log(arrToDoList);
+    rendorState(e);
 }
 
 
