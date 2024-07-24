@@ -122,6 +122,7 @@ function addTasks(e) {
         for(const key in priorityToDoList) {
             const getName = getParentTarget.querySelector(`#${priorityToDoList[key]}`)
             
+<<<<<<< HEAD
             if (getName) {
                 if (arrToDoList.find(e => e.name === getName.value)) return;
                 const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS};
@@ -133,6 +134,12 @@ function addTasks(e) {
 
                 ADD_TASK_INPUT.forEach(e => e.value = "")
             }
+=======
+            const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS}
+            // console.log(newTask);
+            arrToDoList.push(newTask)
+            // console.log(arrToDoList);
+>>>>>>> 66daccfad584fcc80893bea713d4ec64733bf935
         }
         rendorState(e)
 
@@ -170,6 +177,10 @@ function rendorState(e) {
                 
 
                 const btnDelFun = document.querySelector(".delTask")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 66daccfad584fcc80893bea713d4ec64733bf935
                 btnDelFun.addEventListener("click",  (e) => delTask(e));
             }
         }
@@ -181,7 +192,10 @@ function delOldTaskHTML() {
     if(oldTasks.length !== 0) {
         oldTasks.forEach(el => el.remove());
         // console.log(`удаление ${oldTasks.length} произошло`);
+<<<<<<< HEAD
         
+=======
+>>>>>>> 66daccfad584fcc80893bea713d4ec64733bf935
     } 
 }
 
@@ -194,9 +208,12 @@ function delTask(e) {
     const findNameTask = arrToDoList.findIndex(e => e.name === nameTaskTarget);
     const ASK = arrToDoList.splice(findNameTask, 1)
     console.log(arrToDoList);
+<<<<<<< HEAD
 
     // localStorage.removeItem();
 
+=======
+>>>>>>> 66daccfad584fcc80893bea713d4ec64733bf935
     rendorState(e);
 }
 
