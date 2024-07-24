@@ -11,7 +11,8 @@ import {
     block_priority
 } from "./constToDoList.js";
 
-const arrToDoList = /*JSON.parse(localStorage.getItem('item')) ||*/ [];
+const arrToDoList = [];
+const arrlocalDate = [];
 
 const priorityToDoList = {
     LOW : "low",
@@ -28,23 +29,114 @@ const statusToDoList = {
 WRAPPER_TASK.addEventListener("click", addTasks);
 WRAPPER_TASK.addEventListener("submit", addTasks);
 
+// ADD_ITEM_FORM
+// const formItem = ADD_ITEM_FORM.elements;
+// console.log(formItem);
+
+// for(let i = 0; i < formItem.length; i++) {
+//     formItem[i].addEventListener("change", changeForm)
+// }
+
+// function changeForm() {
+//     if (this.type === "text") {
+//         console.log(this);
+//     } else {
+//         console.log(typeText);
+//     }
+// }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // const form = document.getElementById('addItemForm');
+    const form = document.forms.formHTML;
+    console.log(form.elements);
+    const lowInput = localStorage.getItem('low');
+    console.log(lowInput);
+    const hightInput = localStorage.getItem('hight');
+    const middleInput = localStorage.getItem('middle');
+
+    if (lowInput) {
+        form.elements['low'].value = lowInput;
+        console.log(form.elements['low']);
+    }
+    else  if (hightInput) {
+        form.elements['hight'].value = hightInput;
+    }
+    else if (middleInput) {
+        form.elements['middle'].value = middleInput;
+    } 
+    else { console.log(form.elements['low'])
+    }
+});
+
+for(let i = 0; i < ADD_TASK_BTN.length; i++) {
+    ADD_TASK_BTN[i].addEventListener("click", saveForm)
+    console.log(ADD_TASK_BTN[i].name);
+
+}
+function saveForm() {
+    
+    // const form = document.getElementById('addItemForm');
+    const form = document.forms.formHTML;
+    console.log(form.elements['low']);
+    const lowInput = form.elements['low'].value;
+    const hightInput = form.elements['hight'].value;
+    const middleInput = form.elements['middle'].value;
+    
+    // Сохранение данных формы в localStorage
+    for(let i = 0; i < ADD_TASK_BTN.length; i++) {
+    
+    
+        if(ADD_TASK_BTN[i].name === "low"){
+            localStorage.setItem('lowInput', lowInput);
+        }
+        if(ADD_TASK_BTN[i].name === "hight"){
+        localStorage.setItem('hightInput', hightInput);
+        }
+        if(ADD_TASK_BTN[i].name === "middle"){
+        localStorage.setItem('middleInput', middleInput);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 function addTasks(e) {
     e.preventDefault();
-    if(!e.target.classList.contains("addTaskBtn")) return;
-    let containerTask = e.target.closest("div")
-    for(const key in priorityToDoList) {
-        const getName = containerTask.querySelector(`#${priorityToDoList[key]}`)
-        
-        if (getName) {
+    const getParentTarget = e.target.parentElement;
+    // closest(".newTask")
+    // const localDate = JSON.parse(localStorage.getItem('user'));
+
+    // for (const i of arrlocalDate){
+    //     ADD_ITEM_FORM = i
+    // }
+
+    const getInputValue = getParentTarget.querySelector('.addTaskinput');
+    if (getInputValue.value === "" ) return; 
+    else{
+        for(const key in priorityToDoList) {
+            const getName = getParentTarget.querySelector(`#${priorityToDoList[key]}`)
             
-            const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS}
-            console.log(newTask);
-            arrToDoList.push(newTask)
-            console.log(arrToDoList);
+            if (getName) {
+                if (arrToDoList.find(e => e.name === getName.value)) return;
+                const newTask = {name: getName.value, priority: priorityToDoList[key], status: statusToDoList.IN_PROGRESS};
+                console.log(newTask);
+
+                arrToDoList.push(newTask);
+                
+                
+
+                ADD_TASK_INPUT.forEach(e => e.value = "")
+            }
         }
+        rendorState(e)
 
     }
-    rendorState(e)
 }
 
 function rendorState(e) {
@@ -61,7 +153,7 @@ function rendorState(e) {
                 const addInnerHtml = `
                 <div class='conteinerTasks'>
                     <div class='task'>
-                        <div class='nameTask'> ${keyToDoList.name} </div>
+                        <div class='nameTask'>${keyToDoList.name}</div>
                         <div class='BlockStatus'>
                             <div class='statusTask'> ${keyToDoList.priority} </div>
                             ${btnDel}
@@ -69,8 +161,16 @@ function rendorState(e) {
                     </div>
                 <div>`
                 findClassNewTask.insertAdjacentHTML('afterend', addInnerHtml)
+
+                // const localDate = localStorage.setItem("name", JSON.stringify(addInnerHtml));
+                // console.log(localDate);
+
+                // arrlocalDate.push(localDate);
+                // console.log(arrlocalDate);
+                
+
                 const btnDelFun = document.querySelector(".delTask")
-                btnDelFun.addEventListener("click",  () => delTask(keyToDoList.name));
+                btnDelFun.addEventListener("click",  (e) => delTask(e));
             }
         }
     }
@@ -80,26 +180,24 @@ function delOldTaskHTML() {
     const oldTasks = document.querySelectorAll('.conteinerTasks');
     if(oldTasks.length !== 0) {
         oldTasks.forEach(el => el.remove());
-        console.log(`удаление ${oldTasks.length} произошло`);
+        // console.log(`удаление ${oldTasks.length} произошло`);
+        
     } 
 }
 
 
 
-function delTask(nameTask) { 
-    console.log(nameTask);
-    let findNameTask = arrToDoList.find(item => item.name == nameTask)
-    console.log(findNameTask);
+function delTask(e) { 
+    const findBlockStatus = e.target.parentElement;
+    const fintTask = findBlockStatus.parentElement;
+    const nameTaskTarget = fintTask.querySelector('.nameTask').textContent;
+    const findNameTask = arrToDoList.findIndex(e => e.name === nameTaskTarget);
+    const ASK = arrToDoList.splice(findNameTask, 1)
+    console.log(arrToDoList);
 
-    // for(const keyToDoList of arrToDoList){
-    //     console.log(keyToDoList.name);
-        
-        // if (findNameTask.includes(keyToDoList.name)) {
-        //     delete keyToDoList.name
-        // } else {
-        //     console.log("задача не существует");
-        // }
-    // }
+    // localStorage.removeItem();
+
+    rendorState(e);
 }
 
 
