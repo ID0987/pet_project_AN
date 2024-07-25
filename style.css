@@ -98,3 +98,59 @@ body {
 .conteinerTasks {
     padding: 2px;
 }
+
+
+.home__FAQ__wrapper {
+    display: grid;
+    justify-content: center;
+    width: 100%;
+    margin: 90px 0;
+
+}
+
+.home__FAQ {
+    background-color: #102D80;
+    border-radius: 15px;
+    padding: 50px 129px 70px 107px;
+    width: 850px;
+}
+
+.home__FAQ__title {
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.home__FAQ__container {
+    cursor: pointer;
+}
+
+.home__FAQ__ask {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 300;
+    border-bottom: 1px solid #ffffff;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.home__FAQ__ask:after {
+    content: "+";
+    position: absolute;
+    right: 0;
+}
+
+.home__FAQ__question {
+    padding-top: 10px;
+    color: #ffffff;
+    display: none;
+}
+
+.home__FAQ__container.open .home__FAQ__question {
+    display: block;
+}

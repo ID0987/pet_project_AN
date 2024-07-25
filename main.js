@@ -43,21 +43,22 @@ function renderState() {
         for (const key in priorityToDoList) {
             if (priorityToDoList[key] === keyToDoList.priority) {
                 const findClassNewTask = document.getElementById(priorityToDoList[key]).closest(".newTask");
-                const addInnerHtml = `
-                <div class='containerTasks'>
+                const newTaskHTML = document.createElement('div');
+                newTaskHTML.classList.add('containerTasks');
+                newTaskHTML.innerHTML = `
                     <div class='task'>
                         <div class='nameTask'>${keyToDoList.name}</div>
                         <div class='BlockStatus'>
                             <div class='statusTask'>${keyToDoList.priority}</div>
                             <button class='delTask'>x</button>
                         </div>
-                    </div>
-                </div>`;
-                findClassNewTask.insertAdjacentHTML('afterend', addInnerHtml);
+                    </div>`;
+                
+                findClassNewTask.insertAdjacentElement('afterend', newTaskHTML);
             }
         }
     }
-    // Добавляем обработчики событий для кнопок удаления после рендеринга всех задач уже после создания, иначе происходит магия дублирования
+    // Добавляем обработчики событий для всех кнопок удаления после рендеринга всех задач иначе будет магия дублирования
     document.querySelectorAll('.delTask').forEach(btn => {
         btn.addEventListener('click', delTask);
     });
@@ -72,7 +73,7 @@ function delTask(e) {
     const findBlockStatus = e.target.closest('.BlockStatus');
     const findTask = findBlockStatus.closest('.task');
     const nameTaskTarget = findTask.querySelector('.nameTask').textContent;
-    const findNameTask = arrToDoList.findIndex(e => e.name === nameTaskTarget);
+    const findNameTask = arrToDoList.findIndex(task => task.name === nameTaskTarget);
     arrToDoList.splice(findNameTask, 1);
     renderState();
 }
