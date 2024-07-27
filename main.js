@@ -78,5 +78,6 @@ function delTask(e) {
     const nameTaskTarget = findTask.querySelector('.nameTask').textContent;
     const findNameTask = arrToDoList.findIndex(task => task.name === nameTaskTarget);
     arrToDoList.splice(findNameTask, 1);
+    localStorage.setItem('tasks', JSON.stringify(arrToDoList));
     renderState();
 }
