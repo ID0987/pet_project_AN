@@ -2,7 +2,7 @@ import {
     WRAPPER_TASK 
 } from "./constToDoList.js";
 
-const arrToDoList = [];
+const arrToDoList = JSON.parse(localStorage.getItem('tasks')) || [];
 
 const priorityToDoList = {
     LOW: "low",
@@ -15,6 +15,8 @@ const statusToDoList = {
     DONE: "Done",
     TO_DO: "To Do",
 }
+
+document.addEventListener('DOMContentLoaded', renderState)
 
 WRAPPER_TASK.addEventListener("click", addTasks);
 
@@ -32,6 +34,7 @@ function addTasks(e) {
                 status: statusToDoList.IN_PROGRESS
             }
             arrToDoList.push(newTask);
+            localStorage.setItem('tasks', JSON.stringify(arrToDoList));
         }
     }
     renderState();
