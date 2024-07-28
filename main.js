@@ -9,29 +9,34 @@ import {
     GR,
 } from "./const.js";
 
+let numbers = [];
+let operations = [];
+
 CALC_ElELEMENT.forEach(item => {
     item.addEventListener('click', parseAndCalculate)    
 });
 
-function parseAndCalculate(expression) {
+function parseAndCalculate(e) {
     // Массивы для хранения цифр и операций
-    let numbers = [];
-    let operations = [];
+    
     
     let expression = e.target.value;
+    // console.log(expression);
     // Разбиваем выражение на части
-    let parts = expression.split(/(\d+|\+|-|\*|\/)/);
+    let parts = expression.split(/(\d+|\+|-|\*|\/)/) /*.forEach( e => e != "")*/;
     console.log(parts);
+
     RESULT.value += expression
 
     // Проходим по разбитым частям
     for (let i = 0; i < parts.length; i++) {
         if (!isNaN(parts[i])) { // Если часть - число
+            if(parts[i] !== "") {
+            // console.log(parts[i]);
             numbers.push(parseFloat(parts[i]));
-            console.log("number");
+            }
         } else if (parts[i] === '+' || parts[i] === '-' || parts[i] === '*' || parts[i] === '/') {
             operations.push(parts[i]);
-            console.log("not number");
         }
     }
 
@@ -57,9 +62,12 @@ function parseAndCalculate(expression) {
     console.log(numbers);
     console.log(operations);
 
-    RESULT.Value = result
-    console.log(result);
-    console.log(RESULT.Value);
-    return RESULT.Value;
+    CALC_RESULT.addEventListener("click", () => RESULT.value = result)
     
 }
+
+CALC_DEL_ALL.addEventListener("click", () => {
+    numbers.splice(0,numbers.length);
+    operations.splice(0,operations.length);
+    RESULT.value = "";
+})
