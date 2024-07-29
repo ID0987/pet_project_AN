@@ -12,6 +12,13 @@ import {
 let numbers = [];
 let operations = [];
 
+document.addEventListener('DOMContentLoaded', getLocalItem)
+
+function getLocalItem() {
+    const numberREC = localStorage.getItem('numberLocal');
+    RESULT.value = numberREC;
+};
+
 CALC_ElELEMENT.forEach(item => {
     item.addEventListener('click', parseAndCalculate)    
 });
@@ -59,6 +66,7 @@ function parseAndCalculate(e) {
                 break;
         }
     }
+    localStorage.setItem("numberLocal", result);
     console.log(numbers);
     console.log(operations);
 
