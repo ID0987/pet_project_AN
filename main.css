@@ -51,6 +51,8 @@ html, body {
     text-align: right;
     height: 85px;
     font-size: 15px;
+    font-weight: 600;
+    color: rgb(116, 116, 116);
 }
 
 .calcElement, .calcSimbol, .calcResult, .calcDel, .calcDelAll {
