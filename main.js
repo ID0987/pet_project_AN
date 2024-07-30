@@ -9,16 +9,20 @@ import {
     GR,
 } from "./const.js";
 
-let numbers = [];
-let operations = [];
+const numbers = [];
+const operations = [];
+const historyArr = []
 
-try {
+// try {
 
     document.addEventListener('DOMContentLoaded', getLocalItem)
 
     function getLocalItem() {
         const numberREC = localStorage.getItem('numberLocal');
         RESULT.value = numberREC;
+        console.log(numbers);
+        console.log(operations);
+        console.log(historyArr);
     }; 
 
     CALC_ElELEMENT.forEach(item => {
@@ -45,7 +49,7 @@ try {
                 if(parts[i] !== "") {
                 // console.log(parts[i]);
                 numbers.push(parseFloat(parts[i]));
-                
+
                 }
             } else if (parts[i] === '+' || parts[i] === '-' || parts[i] === '*' || parts[i] === '/') {
                 operations.push(parts[i]);
@@ -54,6 +58,11 @@ try {
 
 
         // Выполняем вычисления
+    }   
+
+    CALC_RESULT.addEventListener("click", why );
+
+    function why() {
         let result = numbers[0];
         for (let i = 0; i < operations.length; i++) {
             switch (operations[i]) {
@@ -72,14 +81,15 @@ try {
             }
         }
         console.log(result);
+        historyArr.push(result);
         localStorage.setItem("numberLocal", result);
-        // numbers.push(result);
+        
 
         console.log(numbers);
         console.log(operations);
-
-        CALC_RESULT.addEventListener("click", () => RESULT.value = result );
+        console.log(historyArr);
     }
+    
 
     CALC_DEL_ALL.addEventListener("click", () => {
         numbers.splice(0,numbers.length);
@@ -89,7 +99,7 @@ try {
         HISTORY.value = numbers
     })
 
-} catch (e){
-    alert("код гавно")
-    alert(e)
-}
+// } catch (e){
+//     alert("код гавно")
+//     alert(e)
+// }
