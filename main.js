@@ -2,6 +2,7 @@ import {
     CALC_ElELEMENT,
     RESULT,
     CALC_DEL_ALL,
+    CALC_DEL,
     CALC_RESULT,
     HISTORY,
     GR,
@@ -10,15 +11,18 @@ import {
 const numbers = [];
 const operations = [];
 const historyArr = [];
+const updatePage = [];
 
 document.addEventListener('DOMContentLoaded', getLocalItem);
 
 function getLocalItem() {
     try {
         const numberREC = localStorage.getItem('numberLocal');
-        if (numberREC !== null) {
+        const historyLocalRec = localStorage.getItem("historyLocal")
+        if (numberREC !== null || historyLocalRec !== null ) {
             RESULT.value = numberREC;
-            historyArr.push(numberREC);
+            HISTORY.value = historyLocalRec;
+            updatePage.push(numberREC);
         }
         console.log("Загруженные данные из localStorage:");
         console.log(numbers);
@@ -35,12 +39,12 @@ CALC_ElELEMENT.forEach(item => {
 
 function parseAndCalculate(e) {
     try {
-        let expression = e.target.value;
+        let expression = e.target.value;      
         RESULT.value += expression;
-
+        
         // Разбиваем выражение на части только если выражение завершено оператором
         let parts = RESULT.value.split(/([+\-*/])/).filter(part => part !== "");
-
+        console.log(parts);
         // Очищаем массивы перед новым разбиением
         numbers.length = 0;
         operations.length = 0;
@@ -66,8 +70,13 @@ CALC_RESULT.addEventListener("click", (e) => {
     e.preventDefault(); // Предотвращаем отправку формы, не работает если внутри функции вызывать
     try {
         if (numbers.length === 0 || operations.length === 0) return;
-
         let result = numbers[0];
+
+        let expression = RESULT.value;
+        let historyEntry = `${expression} = `;
+        historyArr.push(historyEntry);
+        localStorage.setItem("historyLocal", historyArr);
+
         for (let i = 0; i < operations.length; i++) {
             switch (operations[i]) {
                 case '+':
@@ -85,15 +94,17 @@ CALC_RESULT.addEventListener("click", (e) => {
             }
         }
         console.log("Результат:", result);
-        historyArr.push(result);
         localStorage.setItem("numberLocal", result);
         RESULT.value = result;
+        HISTORY.value = localStorage.getItem("historyLocal") /*+ localStorage.getItem('numberLocalHistory')*/;
+        
     } catch (error) {
         console.error("Ошибка при выполнении вычислений:", error);
     } finally {
         // Очищаем массивы после вычисления результата
         numbers.length = 0;
         operations.length = 0;
+        historyArr.length = 0;
         console.log("История операций:", historyArr);
         console.log("Массивы чисел и операций очищены");
     }
