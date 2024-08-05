@@ -1,8 +1,9 @@
 import { 
     WRAPPER_TASK 
 } from "./constToDoList.js";
+import tasksMJSon from "./tasks.json" with {type: "json"};
 
-const arrToDoList = JSON.parse(localStorage.getItem('tasks')) || [];
+const arrToDoList = JSON.parse(localStorage.getItem('tasks')) || tasksMJSon;
 
 const priorityToDoList = {
     LOW: "low",

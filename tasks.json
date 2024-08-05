@@ -1,0 +1,17 @@
+[
+    {
+        "name": "jnj",
+        "priority": "low",
+        "status": "statusToDoList.IN_PROGRESS"
+    },
+    {
+        "name": "jnjy",
+        "priority": "high",
+        "status": "statusToDoList.IN_PROGRESS"
+    },
+    {
+        "name": "jnjj",
+        "priority": "middle",
+        "status": "statusToDoList.IN_PROGRESS"
+    }
+]
