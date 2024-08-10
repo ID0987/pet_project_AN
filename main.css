@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+}
+.wrapper {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    height: 100%;
+    
+    background: linear-gradient(rgb(149, 195, 226), rgb(91, 207, 136));
+}
+.bodyCalc {
+    border: 1px solid rgb(206, 206, 206);
+    background-color: rgb(255, 255, 255);
+    width: 350px;
+    height: 370px;
+}
+.gridCalc {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 5px;
+    padding: 5px;
+    height: 238px;
+}
+.windowsResult {
+    border: solid rgb(253, 49, 49);
+    border-width: 3px;
+}
+.result, .history {
+    width: 100%;
+    height: 40px;
+    border: none;
+    padding-right: 10px;
+    font-size: 25px;
+    
+}
+.result {
+    outline: none;
+    text-align: right;
+}
+.history {
+    outline: none;
+    text-align: right;
+    height: 85px;
+    font-size: 15px;
+}
+
+.calcElement, .calcSimbol, .calcResult, .calcDel, .calcDelAll {
+    font-size: 25px;
+    background-color: rgb(145, 219, 197);
+    border: none;
+    
+}
+.calcElement:hover, .calcResult:hover, .calcSimbol:hover, .calcDel:hover, .calcDelAll:hover{
+    background-color: rgb(208, 250, 237);
+}
+
+.tab {
+    border: 1px solid black;
+    width: 300px;
+    height: 200px;
+}
+.tab td {
+    text-align: center;
+    border: 1px solid rgb(48, 48, 48);;
+}
