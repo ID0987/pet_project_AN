@@ -6,6 +6,7 @@
 html, body {
     height: 100%;
     width: 100%;
+    
 }
 .wrapper {
     display: grid;
@@ -14,61 +15,151 @@ html, body {
     text-align: center;
     height: 100%;
     
-    background: linear-gradient(rgb(149, 195, 226), rgb(91, 207, 136));
+    background: linear-gradient(rgb(255, 255, 255), rgb(91, 161, 207));
 }
-.bodyCalc {
-    border: 1px solid rgb(206, 206, 206);
-    background-color: rgb(255, 255, 255);
-    width: 350px;
-    height: 370px;
+
+.weather__container {
+    width: 621px;
+    height: 383px;
+    padding: 10px;
+    background-color: white;
+    
 }
-.gridCalc {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    gap: 5px;
-    padding: 5px;
-    height: 238px;
-}
-.windowsResult {
-    border: solid rgb(253, 49, 49);
-    border-width: 3px;
-}
-.result, .history {
+
+.weather__container__border {
     width: 100%;
-    height: 40px;
-    border: none;
-    padding-right: 10px;
-    font-size: 25px;
-    
-}
-.result {
-    outline: none;
-    text-align: right;
-}
-.history {
-    outline: none;
-    text-align: right;
-    height: 85px;
-    font-size: 15px;
+    height: 100%;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    display: grid;
+    grid-template-rows: 45px 68px 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+        "a a"
+        "b c"
+        "b d";
 }
 
-.calcElement, .calcSimbol, .calcResult, .calcDel, .calcDelAll {
-    font-size: 25px;
-    background-color: rgb(145, 219, 197);
-    border: none;
-    
-}
-.calcElement:hover, .calcResult:hover, .calcSimbol:hover, .calcDel:hover, .calcDelAll:hover{
-    background-color: rgb(208, 250, 237);
+.weather__container__block {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    text-align: start;
+    justify-content: start;
+    align-items: center;
+    padding-left: 18px;
+    padding-right: 18px;
+    font-family: "Roboto";
 }
 
-.tab {
-    border: 1px solid black;
-    width: 300px;
-    height: 200px;
+.search {
+    display: grid;
+    grid-template-columns: 1fr 70px;
+    grid-area: a;
+    
+    width: 100%;
+    height: 100%;
+    border-top: none;
+    border-left: none;
+    padding-left: 0;
+    padding-right: 0;
 }
-.tab td {
+
+.search__input {
+    font-size: 18px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding-left: 20px;
+}
+
+.search__btn {
+    position: relative;
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.search__btn::after {
+    content: "";
+    position: absolute;
+    background-image: url(/img/search.svg);
+    background-repeat: no-repeat ;
+    width: 30px;
+    aspect-ratio: 1;
+    top: 15%;
+    left: 35%;
+}
+
+.weather {
+    position: relative;
+    display: grid;
+    grid-area: b;
+    font-size: 70px;
+    padding: 20px 20px 15px 20px;
+    grid-template-rows: 1fr 35px;
+    grid-template-columns: 1fr;
+    align-items: start;
+    width: 100%;
+    background-image: url(/img/icons8-cloud-96\ 1.svg);
+    background-repeat: no-repeat ;
+    background-position: center;
+}
+
+.weather__container__block__select {
+    
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    align-items: center;
+}
+
+.weather__container__block__select__city {
+    font-size: 24px;
+    font-family: "Roboto";
+}
+
+.weather__container__block__select__favourites {
+    stroke: black;
+    transition: all .3s;
+}
+
+.weather__container__block__select__favourites:hover {
+    stroke: red;
+    fill: red;
+    cursor: pointer;
+}
+
+.add__local {
+    display: grid;
+    grid-area: c;
+    padding: 18px;
+    font-size: 24px;
+}
+
+.citys {
+    display: grid;
+    grid-area: d;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: 1fr;
+    font-size: 24px;
+    padding: 35px 18px 15px 18px;
+    width: 100%;
+}
+
+.weather__container__city {
+    display: grid;
+    grid-template-columns: 1fr 15px;
+}
+
+.weather__container__city__name {
+    cursor: pointer;
+}
+
+.weather__container__city__closes {
     text-align: center;
-    border: 1px solid rgb(48, 48, 48);;
+    cursor: pointer;
 }
