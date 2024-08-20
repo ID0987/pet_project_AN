@@ -97,24 +97,29 @@ html, body {
     position: relative;
     display: grid;
     grid-area: b;
-    font-size: 70px;
-    padding: 20px 20px 15px 20px;
     grid-template-rows: 1fr 35px;
     grid-template-columns: 1fr;
     align-items: start;
-    width: 100%;
     background-image: url(/img/icons8-cloud-96\ 1.svg);
     background-repeat: no-repeat ;
     background-position: center;
 }
 
-.weather__container__block__select {
-    
+.weather__temp {
+    position: absolute;
+    padding: 20px 20px 0 20px;
     width: 100%;
-    height: 100%;
+    font-size: 50px;
+}
+
+.weather__container__block__select {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 30px;
     align-items: center;
+    padding: 0 20px 15px 20px;
 }
 
 .weather__container__block__select__city {
